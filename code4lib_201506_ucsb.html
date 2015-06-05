@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ORCID Integration - for Drupal</title>
+
+    <meta name="description" content="integrating ORCID in Drupal">
+    <meta name="author" content="Casey Grzecka">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css" id="theme">
+    <link rel="stylesheet" href="css/code4lib_201506_ucsb.css">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <img src="images/orcid-logo.png"><h2>Integration</h2>
+          <h3>for Drupal</h3>
+          <br />
+          <br />
+          <p>
+            <small>Created by <a href="http://twitter.com/z3cka">Casey Grzecka</a></small>
+          </p>
+          <img src="images/uclalibrary-logo.png">
+        </section>
+
+        <section>
+          <h2>Drupal plays nice with others</h2>
+          <ul>
+            <li class="fragment">Like libraries</li>
+            <li class="fragment">Like APIs</li>
+          </ul>
+          <p class="fragment">
+            We've all heard this.
+          </p>
+          <div class="fragment">
+            <h2 class="or-grn">But How?</h2>
+          </div>
+
+        </section>
+
+        <section>
+          <section>
+            <h2>Enter <span class="or-grn">OAuth</span></h2>
+            <p>The ORCID API uses OAuth 2.0<span></span></p>
+            <p class="fragment">3-legged OAuth Authorization</p>
+            <medium class="fragment or-grn">hu?</medium>
+            <br>
+            <a href="#" class="navigate-down">
+              <img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
+            </a>
+          </section>
+          <section>
+            <h2>3-legged OAuth Authorization is <span class="or-grn">Easy</span>!</h2>
+            <p class="fragment">Just Google it!</p>
+          </section>
+          <section>
+            <img src="images/3-legged_OAuth_Authorization_-_Google_Search.png">
+          </section>
+          <section>
+            <h2>Leg 1: It's not that bad</h2>
+            <p class="75">
+              <span>
+                <button id="connect-orcid-button" onclick="openORCID()">
+                  <img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width="24" height="24" alt="ORCID logo">
+                    Create or connect your ORCID iD
+              </button></span><span class="fragment"><small>–––> Sign in to ORCID –––></small></span><span class="fragment"><img src="images/ORCID-signin.png" width="280"></span>
+            </p>
+            <p class="fragment or-grn">Authorized!</p>
+            <br>
+          </section>
+          <section>
+            <h2>Leg 2: Thank You</h2>
+            <p>ORCID uses a redirect paramater to send the user back to you site. This request comes with a <span class="or-grn">code</span>.</p>
+            <img class="fragment" src="images/ORCID_–_Thank_you___UCLA_Library.png" width="60%">
+          </section>
+          <section>
+            <h2>Leg 3: Get Stuff</h2>
+            <p>We can use this code to make an API call that gets a response with useful information:</p>
+            <div class="fragment">
+              <pre><code data-trim>dpm($user->data);</code>
+              <img src="images/user-data_array___UCLA_Library.png">
+            </div>
+            <big class="fragment or-grn">Success!</big>
+          </section>
+        </section>
+
+        <section>
+            <h2>How does it work?</h2>
+            <p>Custom module: <a href="https://github.com/UCLALibrary/libraryweb-site/tree/master/www/sites/all/modules/contrib/orcid_integration">orcid_integration</a></p>
+            <div class="fragment">
+              <ul>
+                <p>submodules:</p>
+                <li>orcid_integration_provision</li>
+                <li>orcid_oauth</li>
+                <ul>
+                  <p>dependencies:</p>
+                  <li>wsclient</li>
+                  <li>wsclient_rest <span class="fragment or-grn">+ http_client</span></li>
+                </ul>
+              </ul>
+            </div>
+          </script>
+        </section>
+
+        <section>
+          <section>
+            <h2>Config</h2>
+            <p>typical form stuff:</p>
+            <pre>
+              <code data-trim>
+/**
+ * @file
+ * ORCID administrative functions, forms.
+ */
+
+function orcid_integration_services_configuration($form, &$form_state) {
+global $base_url;
+
+$form['orcid_integration_main_url'] = array(
+  '#title' => t('ORCID Main URL'),
+  '#type' => 'textfield',
+  '#description' => t('Please enter the main orcid url, such as http://orcid.org/ or http://sandbox.orcid.org/'),
+  '#required' => TRUE,
+  '#default_value' => variable_get('orcid_integration_main_url', 'http://sandbox.orcid.org/'),
+);
+$form['orcid_integration_public_api_url'] = array(
+  '#title' => t('ORCID API URL'),
+  '#type' => 'textfield',
+  '#description' => t('Please enter the public orcid api url as per !link. If a members api search is not possible, we will use the public query api instead.', array('!link' => 'http://support.orcid.org/knowledgebase/articles/116874-orcid-api-guide')),
+  '#required' => TRUE,
+  '#default_value' => variable_get('orcid_integration_public_api_url', 'http://api.sandbox.orcid.org/'),
+);
+$form['oauth'] = array(
+  '#type' => 'fieldset',
+  '#title' => 'OAUTH Credentials',
+  '#description' => 'If OAUTH credentials are provided, this will allow for actions beyond basic search.',
+  '#collapsed' => FALSE,
+  '#collapsible' => FALSE,
+);
+...
+              </code>
+            </pre>
+          </section>
+          <section>
+            <img src="images/ORCID-config___UCLA_Library.png" width="60%">
+          </section>
+        </section>
+
+        <section>
+          <h2>Construct <span class="or-grn">WSCLIENT</span>Service Object</h2>
+          <pre><code data-trim>
+/*
+ * Implements hook_default_wsclient_service().
+ */
+function orcid_oauth_default_wsclient_service() {
+  // construct ORCID service
+  $service = new WSClientServiceDescription();
+  $service->name = 'orcid_oauth_service';
+  $service->label = 'ORCID Service';
+  $service->url = variable_get('orcid_integration_public_api_url', 'https://pub.sandbox.orcid.org/') . 'oauth/token';
+  $service->type = 'rest';
+  // construct operations
+  $operation['parameter']['client_id'] = array('type' => 'text', 'default_value' => '');
+  $operation['parameter']['client_secret'] = array('type' => 'text', 'default_value' => '');
+  $operation['parameter']['grant_type'] = array('type' => 'text', 'default_value' => 'authorization_code');
+  $operation['parameter']['code'] = array('type' => 'text', 'default_value' => '');
+  $operation['type'] = 'POST';
+  // add operations to service
+  $service->operations['getOrcidId'] = $operation;
+  $service->settings['curl options'] = array('Accept: application/json');
+  // add service to services array
+  $services[$service->name] = $service;
+  // clear $operation array for possible later use
+  $operation = array();
+
+  return $services;
+}
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Leg 2: Get <span class="or-grn">Code</span></h2>
+          <small>(skipped LEG 1 —because it's boring!)</small>
+          <pre><code data-trim>
+/*
+ * Returns a close button for the connect to ORCID's popup window
+ * and saves the orcid code to the user's orcid code field.
+ */
+function orcid_oauth_thankyou() {
+  // get ?code=xxxxxx param
+  $qparams = drupal_get_query_parameters();
+  // load user account from redirection
+  $vars['account'] = user_load(arg(1));
+  // assign code to data array
+  $edit = array(
+    'data' => array(
+      'orcid_code' => $qparams['code'],
+    ),
+  );
+  // save code to user['data'] via $edit param
+  user_save($vars['account'], $edit);
+  return theme('orcid_oauth_thankyou', $vars);
+}
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Leg 3: Use <span class="or-grn">Code</span></h2>
+          <pre><code data-trim>
+function orcid_oauth_get_orcid_id($vars) {
+  $service = wsclient_service_load('orcid_oauth_service');
+  $client_secret = variable_get('orcid_integration_api_client_secret');
+  try {
+    // call ORCID service with params to override defaults
+    $response = $service->getOrcidId(
+      $vars['orcid']['client_id'],
+      $client_secret,
+      'authorization_code',
+      $vars['account']->data['orcid_code']
+    );
+    $vars['account']->field_orcid_id[LANGUAGE_NONE][0]['value'] = $response['orcid'];
+    // save orcid response to user data array
+    user_save($vars['account'], array(
+      'data' => array(
+        'orcid_response' => $response,
+        'orcid_response_timestamp' => time(),
+        // TODO: use this in calls later to see if we have to get a new access_token
+      )
+    ));
+  }
+  catch (WSClientException $exception) {
+    return false;
+  }
+  return $response;
+}
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Account Linked to <span class="or-grn">orcid</span></h2>
+          <img src="images/orcid-linked___UCLA_Library.png" width="50%">
+        </section>
+
+        <section style="text-align: left;">
+          <h1>THANK YOU</h1>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
