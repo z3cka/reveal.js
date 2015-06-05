@@ -1,0 +1,15 @@
+.or-grn,
+h2.or-grn {
+	color: #a6ce39;
+}
+
+.75 {
+	width: 75%;
+}
+
+/*.75 button {*/
+button {
+	/*display: block;*/
+	/*text-align: left;*/
+	vertical-align: top;
+}
