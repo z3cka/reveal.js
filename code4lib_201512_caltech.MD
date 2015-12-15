@@ -26,6 +26,7 @@
 ## How Grav + Ansible == WIN!
 Grav is PHP so the team feels comfortable with it, but there are new things to learn like:
 * working with Symfony, a PHP framework that Drupal 8 uses
+* working with Twig, a PHP frontend framework
 * working with Composer, a PHP library dependence manager
 ### Automation with Ansible
 * server only requires SSH
