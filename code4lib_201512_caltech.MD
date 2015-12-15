@@ -1,6 +1,3 @@
-<section>
-          <section data-markdown>
-            <script type="text/template">
               ## Why we chose Grav for http://ndlc.ingo
               ### general concepts
               * everything in code via Git
@@ -10,10 +7,7 @@
               * good documentation
               * flexible front-end
               * fast prototyping
-            </script>
-          </section>
-          <section data-markdown>
-            <script type="text/template">
+
               ## Requirements
               * a few pages
               * a few editors
@@ -27,10 +21,8 @@
                 * as programmers
                 * as content creators
               * system administrators
-            </script>
-          </section>
-          <section data-markdown>
-            <script type="text/template">
+
+
               ## How Grav + Ansible == WIN!
               Grav is PHP so the team feels comfortable with it, but there are new things to learn like:
               * working with Symfony, a PHP framework that Drupal 8 uses
@@ -39,10 +31,7 @@
               * server only requires SSH
               * all server configureations done via Ansible so it is in git and version control
               * same local setups as production
-            </script>
-          </section>
-          <section data-markdown>
-            <script type="text/template">
+
               ## Known Unknowns
               I knew there would be something that would come up, just not sure what it would be.
               ### File uploads
@@ -54,10 +43,7 @@
               ### Ansible issues
               Ansible also had a bit of a learning curve, so better to learn on a system that has less moving parts than something like Drupal.
               * **Strange error reporting** - Ansible was reporting SSH errors that turned out to actually be file permissions
-            </script>
-          </section>
-          <section data-markdown>
-            <script type="text/template">
+
             ## Benefits outweighted the Risks
             ### Benefits
             * New lessons learned with using the tools yielded a greater understanding:
@@ -70,6 +56,3 @@
             * Getting things like Grav cli install errors on Ansible deployment
               * turned out to be a bug in Composer using too much memory
               * we are currently stuck on Grav 1.0-rc2 because of this
-            </script>
-          </section>
-        </section>
