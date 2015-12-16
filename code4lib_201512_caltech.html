@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ndlc.info + GRAV</title>
+
+    <meta name="description" content="a case study about using GRAV for ndlc.info">
+    <meta name="author" content="Casey Grzecka">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css" id="theme">
+    <link rel="stylesheet" href="css/code4lib_201512_caltech.css">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h2>ndlc.info + GRAV</h2>
+          <h3>a case study</h3>
+          <br />
+          <br />
+          <p>
+            <small>Created by Casey Grzecka —<a href="http://twitter.com/z3cka">@z3cka</a></small>
+          </p>
+          <img src="images/uclalibrary-logo.png">
+        </section>
+        <section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Why we chose Grav for http://ndlc.ingo
+              ### general concepts
+              * everything in code via Git
+              * simplicity vs complexity
+              * simple deployment with Ansible
+              * buildable via cli utility - `bin/grav install`
+              * good documentation
+              * flexible front-end
+              * fast prototyping
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Requirements
+              * a few pages
+              * a few editors
+              * timely content review by non-tenical user
+              * form submissions with file uploads
+              * clean simple design
+              ## Users
+              * info seekers
+              * talk submitters
+              * developers
+                * as programmers
+                * as content creators
+              * system administrators
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## How Grav + Ansible == WIN!
+              Grav is PHP so the team feels comfortable with it, but there are new things to learn like:
+              * working with Symfony, a PHP framework that Drupal 8 uses
+              * working with Composer, a PHP library dependence manager
+              ### Automation with Ansible
+              * server only requires SSH
+              * all server configureations done via Ansible so it is in git and version control
+              * same local setups as production
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Known Unknowns
+              I knew there would be something that would come up, just not sure what it would be.
+              ### File uploads
+              One of the risks of choosing a young framework like Grav is may not be support for things that more established frameworks have, like file uploads. Grav has a very robust form API but did not support file uploads at the time of creating the site. It does now _(was added a few weeks ago)_
+              **Opportunitity** - we took this as a challenge to learn the Grav plugin system and write our own file upload plugin
+              #### what we learned
+              * how Grav hooks work
+              * review of how files get uploaded via PHP
+              ### Ansible issues
+              Ansible also had a bit of a learning curve, so better to learn on a system that has less moving parts than something like Drupal.
+              * **Strange error reporting** - Ansible was reporting SSH errors that turned out to actually be file permissions
+            </script>
+          </section>
+          <section data-markdown>
+            <script type="text/template">
+              ## Benefits outweighted the Risks
+              ### Benefits
+              * New lessons learned with using the tools yielded a greater understanding:
+                * Object Oriented PHP coding with Grav
+                * Ansible deployments - tracked with git
+                * SASS
+                * Bootstrap - extended with subthemes in Grav
+                * Git as a deployment workflow
+              ### ~~Risks~~ err Opportunities
+              * Getting things like Grav cli install errors on Ansible deployment
+              * turned out to be a bug in Composer using too much memory
+              * we are currently stuck on Grav 1.0-rc2 because of this
+            </script>
+          </section>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
