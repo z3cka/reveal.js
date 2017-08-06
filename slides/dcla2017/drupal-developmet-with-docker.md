@@ -9,7 +9,7 @@ revealOptions:
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 ## Drupal Development with Docker
 
-Casey Grzecka
+Casey Grzecka<div class="fragment">_`@z3cka`_</div>
 #### UCLA Library
 
 ---
@@ -256,19 +256,34 @@ Define services via docker-compose with images, etc.
 ---
 
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
-Docksal cli: fin
-`fin db`
-    Examples:
+## Docksal cli:  `fin`  
+Examples:
 
     fin db dump ~/dump.sql            #Export!
     fin db import ~/dump.sql          #Import!
+
+    fin bash [service]   #Open shell into service's container.
+    exec <command|file>  #Execute a command or a script in cli
+    ssh-add [-lD] [key]  #Adds ssh private key to the authentication 
+                         #agent (fin help ssh-add)
+
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Docksal cli:  `fin`  
+Examples: _(con't)_
+
+    fin drush [command]     #Execute Drush command (Drupal)
+    fin drupal [command]    #Execute Drupal Console command (D8)
+    fin wp [command]        #Execute WP-CLI command (WordPress)
 
 ---
 
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 ## Docksal share!!!
     fin share
-### Built in https://ngrok.io/
+### Built in https://ngrok.io/ support!
 
 ---
 
@@ -277,5 +292,4 @@ Try anything! (Almost)
 * Git gogs server + droneCI
 * get crazy with anything you can run with Docker
 
----
 
