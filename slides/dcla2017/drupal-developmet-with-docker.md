@@ -15,6 +15,21 @@ Casey Grzecka
 ---
 
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+### My Local Dev Docker Arc
+1. look for existing tool <span class="fragment">(drude)</span>
+2. roll my own <span class="fragment">(z3cka/c9-phpbrew-drupal)</span>
+3. look again and discover <span class="fragment">(Docksal)</span>
+
+Note:
+### purpose of this talk
+1. question feasability and value (tell brief Drude story) - https://github.com/blinkreaction/dde
+2. feel the pain
+3. joy of not reinventing the wheel
+4. show and learn about a really great tool
+
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 # Docker
 <img data-src="./images/docker.png">
 Note:
@@ -22,74 +37,151 @@ Note:
 * good for deployment
 
 <!--v-->
+
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 ## Why local Docker
+<ul>
+  <li class="fragment">VM vs container</li>
+  <li class="fragment">better resource utilization</li>
+  <li class="fragment">dependency isolation</li>
+  <li class="fragment">separation on concerns</li>
+</ul>
+
+Note: 
 * VM vs container
 * better resource utilization
 * dependency isolation
 * separation on concerns
 
-Note: speaker notes FTW!
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+#### Why Roll your own local Docker Dev
+<ul>
+    <li class="fragment">my vagrant local Host mounted fs via virtualbox was sooooo slow</li>
+    <li class="fragment">mimic arch that we will be deploying to</li>
+    <li class="fragment">multiple projects with diff deps</li>
+    <li class="fragment">docker was so new and shiny</li>
+    <li class="fragment">I don't like (manually configuring) VMs</li>
+    <li class="fragment">docker native in linux</li>
+</ul>
+
+Note:
+* What does it take? My experience rolling my own.  
+* fixed mount by nfs4 maybe
 
 ---
 
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
-What does it take? My experience rolling my own. 
-* Why?
-    * my vagrant local Host via virtualbox mount sucked and was sooooo slow
-    * mimic arch that we will be doploing to
-    * multiple projects with diff deps
-    * docker was so new and shiny
-    * I don't like (manually configuring) VMs
-    * docker native in linux
-* Don't treat it like a VM
-    * unless you want to, I'm not your mom
-        * do what you want
-        * that's how I started
-    * docker run -it ubuntu bash
-        * and you are off
-        * apt get install vim Foo
-        * but you won't get far before you just did the old way, the new way
-        * you need ports open, services started, volumes mounted, etc.
-    * so, let's just re-run with new configs, wrong, can't data does not persist without volume mounted, host or otherwise
-        * you could docker export, but dont
-    * so, build the repetitive tasks into a Dockerfile...
-        * so easy, basically bash
-        * and make each image inherit only what it needs...
-        * show z3cka/c9 + php + drupal 
-        * where do we install and run MySQL?
+#### When Rolling your own local Docker Dev
+* Don't treat you container like a VM
+<ul>
+    <li class="fragment">unless you want to</li>
+    <li class="fragment">do what you want</li>
+</ul>
+<div class="fragment">
+    `docker run -it ubuntu bash`
+</div>
+<ul>
+    <li class="fragment">and you are off</li>
+    <div class="fragment">`apt get install vim foo`</div>
+</ul>
+
+Note:
+* I'm not your mom
+* that's how I started
 
 ---
 
-Can we start coding drupal awesomeness yet? No! More local arch to manage!
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+### Doing the Old Way, the New Way
+* you need ports open, services started, volumes mounted, etc.
+* so, let's just re-run with new configs, wrong, can't data does not persist without volume mounted, host or otherwise
+* so, build the repetitive tasks into a Dockerfile...
+* so easy, basically bash
+* and make each image inherit only what it needs...
+* show z3cka/c9 + php + drupal 
+    * where do we install and run MySQL?
 
-Separate concerns
+Note:
+2. you could docker export or commit or something, but don't
+ 
+* are you feeling the pain?
+* does this seem better?
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+#### Can we start coding drupal awesomeness yet? 
+<div class="fragment">No!!!! We have more local arch to manage!</div>
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Separate concerns
 * Put services in different containers
-* don't have to over do it
-    * don't have to worry about making it one process, you will go mad
 * do the next iteration of clown computing just with containers
 * use docker-compose
     * yaml that sets up all your services
-    * it's awesome, but wouldn't it be nice if you didnt have to start from scratch?
-        * everything in the lamp stack has been dockerized to the teeth!
-        * xkcd VM til fired comic
-        * use a tool
-        * what if I told you this tool would manage your VM too!?
 
-Introducing Docksal
-* Dock---s------al 
-* Docker s Drupal
-    * maybe the s is from the s in dorsal, as in the dorsal fin of the Docker whale. 
-        —S. Gurnick
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+
+>Docker is awesome, and fun to play with!  —Me
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+### but...
+<img data-src="./images/xkcde.png">
+## XKCDE
+> `4. They unplug the root machine but the thousands of leaf VMs scatter in the wind and start spinning up new instances wherever they land
+
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+#### Wouldn't it be nice if you didnt have to start from scratch?
+* everything in the lamp stack has been dockerized already
+* use a tool
+* what if I told you this tool would manage your VM too!?
+
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Introducing Docksal
+<img data-src="./images/docksald.png">  
+`Dock---s-----al`  
+`Docker s Drupal`
+
+Note:
 * Say generally what it does
 
-Docksal VM management
-* docker still needs a VM to run on OS X* le sigh
+<!--v-->
+
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+>Maybe the 's' is from the 's' in dorsal; as in the dorsal fin of the Docker whale.  
+—S. Gurnick
+
+---
+
+
+
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Docksal VM management
+* docker still needs a VM to run on OS X* _le sigh_
 * Commands
     * create
     * resize ram
 
-Docksal Project handling
+----
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Docksal Project handling
 * pl — project list
 * project create demo
 * existing project
