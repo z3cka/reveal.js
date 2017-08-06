@@ -10,7 +10,7 @@ revealOptions:
 ## Drupal Development with Docker
 
 Casey Grzecka
-### UCLA Library
+#### UCLA Library
 
 ---
 
@@ -44,7 +44,7 @@ Note:
   <li class="fragment">VM vs container</li>
   <li class="fragment">better resource utilization</li>
   <li class="fragment">dependency isolation</li>
-  <li class="fragment">separation on concerns</li>
+  <li class="fragment">separation of concerns</li>
 </ul>
 
 Note: 
@@ -160,47 +160,122 @@ Note:
 
 <!--v-->
 
-
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 >Maybe the 's' is from the 's' in dorsal; as in the dorsal fin of the Docker whale.  
 —S. Gurnick
 
----
+<!--v-->
 
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 
+## What is Docksal?
+<img data-src="./images/docksald.png">  
+
+Note:
+Docksal is a tool for defining and managing development environments. It brings together common tools, minimizes configuration, and ensures environment consistency throughout your continuous integration workflow.
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Features
+
+`fin`   
+<img data-src="./images/docker.png">  
+FTW!
+
+Note:
+Docksal uses Docker to create fully containerized environments. It also uses Virtual Box to support MacOS and Windows. Its main feature is the inclusion of a command-line tool, called fin, that simplifies the management of all components.
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Toolbox
+
+Docksal comes preloaded with common Drupal development tools like:
+* Drush 
+* Drupal Console
+* Composer
+* PHP Code Sniffer
+* php-cli
+* It also comes with node, npm, ruby, bundler, and python.
+
+<!--v-->
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Services
+### Built-in support for 
+* Apache Solr 
+* Varnish 
+* Memcache 
+* Selenium
+* Behat. 
+ 
+And since services are containerized with Docker, any other service needed for a project can be added!
 
 ---
 
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 ## Docksal VM management
-* docker still needs a VM to run on OS X* _le sigh_
-* Commands
-    * create
-    * resize ram
+* Docker still needs a VM to run on OS X* _le sigh_
+Commands
+    * `fin start`/`stop`/`kill`
+    * `fin ram` – show and set memory of the vm
+    * `fin hdd` – Show disk size and usage
+    * `fin stats` – Show CPU and network usage
 
-----
+Note:
+* technically the "native" Mac OS is still a small vm called xyve (or something like that)
+
+---
 
 <!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 ## Docksal Project handling
-* pl — project list
-* project create demo
-* existing project
 
-Docksal envronment
+* `fin pl` — project list
+* `fin project create` demo in a bit
+* existing project support _(will show this as well)_
+
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Docksal envronment
 * Env file
     * set docroot
     * enable xdebug
 
-Docksal yaml
-* Define services via docker-compose with images, etc.
-* php version image
-* add solr demo
+---
 
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Docksal Servies – yaml
+Define services via docker-compose with images, etc.
+* apache/php version via docker images: 
+    * `docksal/web:1.0-apache2.2`
+    * `docksal/cli:1.2-php7`
+* add solr to drupal – _UCLA Library demo_
+
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 Docksal cli: fin
-* fin db demo
+`fin db`
+    Examples:
 
-Docksal share!!!
+    fin db dump ~/dump.sql            #Export!
+    fin db import ~/dump.sql          #Import!
 
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
+## Docksal share!!!
+    fin share
+### Built in https://ngrok.io/
+
+---
+
+<!-- .slide: data-background="./images/drupalcampla-presentation-template-1024x768.png" -->
 Try anything! (Almost)
 * Git gogs server + droneCI
-* get crazy with rancher
+* get crazy with anything you can run with Docker
+
+---
+
